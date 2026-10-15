@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#ff69b4" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Our Dream AI</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: #ffffff;
+      color: #222;
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      position: relative;
+      padding-bottom: 70px;
+      overflow-x: hidden;
+    }
+
+    /* ========== TOP BAR ========== */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: #f8f8f8;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .menu-btn {
+      font-size: 24px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .login-btn {
+      background: none;
+      border: none;
+      color: #555;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    .join-btn {
+      background: #ff69b4;
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* ========== PROGRESS ========== */
+    .progress {
+      display: flex;
+      justify-content: space-around;
+      padding: 14px 8px;
+      background: #fafafa;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .progress span {
+      font-size: 20px;
+      opacity: 0.35;
+    }
+    .progress span.active {
+      opacity: 1;
+      color: #ff69b4;
+    }
+
+    /* ========== TITLE ========== */
+    .title {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 800;
+      color: #ff69b4;
+      letter-spacing: 1.5px;
+      margin: 20px 0 16px;
+    }
+
+    /* ========== GENDER TABS ========== */
+    .gender-tabs {
+      display: flex;
+      background: #1a1a1a;
+      border-radius: 50px;
+      margin: 0 16px 22px;
+      overflow: hidden;
+    }
+    .gender-tabs button {
+      flex: 1;
+      padding: 13px 0;
+      border: none;
+      background: transparent;
+      color: #999;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .gender-tabs button.active {
+      background: #ff69b4;
+      color: white;
+    }
+
+    /* ========== CARDS ========== */
+    .cards {
+      display: flex;
+      gap: 12px;
+      padding: 0 16px;
+      margin-bottom: 28px;
+    }
+    .card {
+      flex: 1;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 3px solid transparent;
+      position: relative;
+      background: #f0f0f0;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .card.selected {
+      border-color: #ff69b4;
+      box-shadow: 0 4px 15px rgba(255, 105, 180, 0.25);
+    }
+    .card img {
+      width: 100%;
+      height: 290px;
+      object-fit: cover;
+      display: block;
+    }
+    .card .label {
+      position: absolute;
+      bottom: 12px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: white;
+      font-weight: 800;
+      font-size: 16px;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.7);
+      letter-spacing: 1px;
+    }
+    .card .check {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #ff69b4;
+      color: white;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    /* ========== BEGIN BUTTON ========== */
+    .begin-btn {
+      display: block;
+      width: calc(100% - 32px);
+      margin: 0 16px 20px;
+      padding: 17px;
+      background: linear-gradient(90deg, #ff69b4, #ff1493);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
+    }
+
+    /* ========== CREATION FORM ========== */
+    .creation-form {
+      display: none;
+      padding: 16px;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .creation-form h3 {
+      margin-bottom: 18px;
+      color: #ff69b4;
+      font-size: 20px;
+    }
+    .option-group {
+      margin-bottom: 20px;
+    }
+    .option-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 15px;
+    }
+    select, input[type="range"] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1.5px solid #ddd;
+      font-size: 15px;
+      background: #fafafa;
+    }
+    select:focus {
+      outline: none;
+      border-color: #ff69b4;
+    }
+    .pose-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .pose-item {
+      background: #f5f5f5;
+      padding: 14px 6px;
+      text-align: center;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .pose-item.selected {
+      border-color: #ff69b4;
+      background: #fff0f7;
+      color: #ff1493;
+      font-weight: 700;
+    }
+
+    /* ========== BOTTOM NAV ========== */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      max-width: 480px;
+      margin: 0 auto;
+      background: #2a2a2a;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0 12px;
+      color: #999;
+      font-size: 11px;
+      z-index: 100;
+      border-top: 1px solid #444;
+    }
+    .bottom-nav .item {
+      text-align: center;
+      cursor: pointer;
+      width: 20%;
+    }
+    .bottom-nav .item.active {
+      color: #ff69b4;
+    }
+    .bottom-nav .icon {
+      font-size: 22px;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    /* Result Screen */
+    .result-screen {
+      display: none;
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .result-screen img {
+      width: 100%;
+      max-width: 320px;
+      border-radius: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <button class="menu-btn">☰</button>
+    <div class="top-right">
+      <button class="login-btn">Login</button>
+      <button class="join-btn">Join Free</button>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress">
+    <span class="active">👤</span>
+    <span>🖼️</span>
+    <span>😊</span>
+    <span>🧍</span>
+    <span>👗</span>
+    <span>📄</span>
+    <span>✨</span>
+  </div>
+
+  <!-- TITLE -->
+  <div class="title">OUR DREAM AI</div>
+
+  <!-- GENDER TABS -->
+  <div class="gender-tabs" id="genderTabs">
+    <button class="active" onclick="selectGender(this)">♀ Female</button>
+    <button onclick="selectGender(this)">♂ Male</button>
+    <button onclick="selectGender(this)">⚧ Trans</button>
+  </div>
+
+  <!-- MAIN CARDS -->
+  <div class="cards" id="mainCards">
+    <div class="card selected" onclick="selectCard(this)">
+      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&h=700&fit=crop" alt="Realistic">
+      <div class="check">✓</div>
+      <div class="label">REALISTIC</div>
+    </div>
+    <div class="card" style="opacity: 0.55; pointer-events: none;">
+      <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=500&h=700&fit=crop" alt="Only Realistic">
+      <div class="label">ONLY REALISTIC</div>
+    </div>
+  </div>
+
+  <button class="begin-btn" id="beginBtn" onclick="startCreation()">Begin</button>
+
+  <!-- CREATION FORM -->
+  <div class="creation-form" id="creationForm">
+    <h3>कैरेक्टर बनाएं (सिर्फ 18+)</h3>
+
+    <div class="option-group">
+      <label>रिलेशन / रोल</label>
+      <select id="relation">
+        <option>Stepmom</option>
+        <option>Step dad</option>
+        <option>Step brother</option>
+        <option>Step sister</option>
+        <option>Cousin brother</option>
+        <option>Cousin sister</option>
+        <option>Husband & Wife</option>
+        <option>Girlfriend & Boyfriend</option>
+        <option>Housewife</option>
+        <option>Police girl</option>
+        <option>Police wife</option>
+      </select>
+    </div>
+
+    <div class="option-group">
+      <label>ड्रेस</label>
+      <select id="dress">
+        <option>Saari</option>
+        <option>Suit Pajama</option>
+        <option>Lehenga</option>
+        <option>Half t-shirt</option>
+        <option>School dress (18+ only)</option>
+        <option>Police women dress</option>
+        <option>Security guard dress</option>
+        <option>Jeans + Top</option>
+      </select>
+    </div>
+
+    <div class="option-group">
+      <label>कद (Height) — <span id="heightValue">165 cm</span></label>
+      <input type="range" min="145" max="185" value="165" id="heightRange" oninput="updateHeight(this.value)">
+    </div>
+
+    <div class="option-group">
+      <label>पोज़ (All Positions)</label>
+      <div class="pose-grid">
+        <div class="pose-item selected" onclick="selectPose(this)">Kneeling</div>
+        <div class="pose-item" onclick="selectPose(this)">Sitting</div>
+        <div class="pose-item" onclick="selectPose(this)">Standing</div>
+        <div class="pose-item" onclick="selectPose(this)">Lying</div>
+        <div class="pose-item" onclick="selectPose(this)">Side</div>
+        <div class="pose-item" onclick="selectPose(this)">Back</div>
+        <div class="pose-item" onclick="selectPose(this)">Close-up</div>
+        <div class="pose-item" onclick="selectPose(this)">Full Body</div>
+        <div class="pose-item" onclick="selectPose(this)">Over Shoulder</div>
+      </div>
+    </div>
+
+    <button class="begin-btn" onclick="generateCharacter()">Generate Image</button>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div class="result-screen" id="resultScreen">
+    <h3 style="color:#ff69b4; margin-bottom:16px;">आपका कैरेक्टर तैयार है</h3>
+    <img id="resultImage" src="" alt="Generated Character">
+    <button class="begin-btn" onclick="location.reload()">नया बनाएं</button>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <div class="item"><span class="icon">🔍</span>Explore</div>
+    <div class="item"><span class="icon">💬</span>Chat</div>
+    <div class="item active"><span class="icon">➕</span>Create</div>
+    <div class="item"><span class="icon">✨</span>Generate</div>
+    <div class="item"><span class="icon">📁</span>My AI</div>
+  </div>
+
+  <script>
+    function selectGender(btn) {
+      document.querySelectorAll('#genderTabs button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function selectCard(card) {
+      document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+    }
+
+    function startCreation() {
+      document.getElementById('mainCards').style.display = 'none';
+      document.getElementById('beginBtn').style.display = 'none';
+      document.getElementById('creationForm').style.display = 'block';
+    }
+
+    function selectPose(el) {
+      document.querySelectorAll('.pose-item').forEach(p => p.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    function updateHeight(val) {
+      document.getElementById('heightValue').innerText = val + ' cm';
+    }
+
+    function generateCharacter() {
+      const relation = document.getElementById('relation').value;
+      const dress = document.getElementById('dress').value;
+      const height = document.getElementById('heightRange').value;
+      const pose = document.querySelector('.pose-item.selected').innerText;
+
+      // यहाँ असली AI API कनेक्ट कर सकते हो
+      // अभी के लिए demo
+      document.getElementById('creationForm').style.display = 'none';
+      document.getElementById('resultScreen').style.display = 'block';
+      document.getElementById('resultImage').src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&h=700&fit=crop";
+
+      alert(`कैरेक्टर जनरेट हो गया!\n\nRelation: ${relation}\nDress: ${dress}\nHeight: ${height}cm\nPose: ${pose}`);
+    }
+  </script>
+</body>
+</html>
