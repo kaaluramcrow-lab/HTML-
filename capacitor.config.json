@@ -1,0 +1,11 @@
+{
+  "appId": "com.ourdreamai.app",
+  "appName": "Our Dream AI",
+  "webDir": ".",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": true
+  }
+}
