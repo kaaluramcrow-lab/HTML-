@@ -1,0 +1,13 @@
+{
+  "name": "our-dream-ai",
+  "version": "1.0.0",
+  "description": "Our Dream AI App",
+  "scripts": {
+    "build": "echo 'Static HTML ready'"
+  },
+  "dependencies": {
+    "@capacitor/core": "^6.1.2",
+    "@capacitor/cli": "^6.1.2",
+    "@capacitor/android": "^6.1.2"
+  }
+}
